@@ -55,6 +55,8 @@ namespace LibZLMediaKitMediaServer
         private DateTime? _zlmBuildDateTime;
         private string? _akstreamKeeperVersion;
         private Dictionary<string,int>? _disksUseable=new Dictionary<string, int>();
+        private bool? _isInitRtspAuthData = false;
+        private string? _cutMergeFilePath;
 
 
         public ServerInstance()
@@ -311,6 +313,25 @@ namespace LibZLMediaKitMediaServer
             get => _disksUseable;
             set => _disksUseable = value;
         }
+
+        /// <summary>
+        /// 初始化过rtspAuth数据
+        /// </summary>
+        public bool? IsInitRtspAuthData
+        {
+            get => _isInitRtspAuthData;
+            set => _isInitRtspAuthData = value;
+        }
+
+        /// <summary>
+        /// 裁剪合并文件目录地址
+        /// </summary>
+        public string CutMergeFilePath
+        {
+            get => _cutMergeFilePath;
+            set => _cutMergeFilePath = value;
+        }
+
 
         public void Dispose()
         {

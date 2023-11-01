@@ -1,5 +1,5 @@
 {
-  "SipIpAddress": "127.0.0.1",
+  "SipIpAddress": "0.0.0.0",
   "SipIpV6Address": "fe80::8:807:2143:28a1%5",
   "ServerSipDeviceId": "33020000021180000001",
   "SipPort": 5060,
@@ -14,12 +14,15 @@
   "IpV6Enable": true,
   "EncodingType": "GB2312",
   "IsPassive": true,
+
   "MediaServerId": "unknown_server_",
   "Enabled": false,
   "RtpWithTcp": false,
   "AutoVideo": true,
   "NoPlayerBreak": false,
-  "RecordSecs": 36000,
+  "RecordSecs": 3600,
+  "ListenIp" : "0.0.0.0",
+
   "NoAuthenticationRequireds": [
     {
       "IpV4Address": "192.168.2.92",

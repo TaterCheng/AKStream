@@ -558,6 +558,7 @@ namespace AKStreamKeeper
                 KeeperPerformanceInfo = _keeperSystemInfo.GetSystemInfoObject();
             }
 
+            
             if (!File.Exists(_configPath))
             {
                 //创建文件 
@@ -755,6 +756,7 @@ namespace AKStreamKeeper
                 tmpKeepAlive.MediaServerIsRunning = MediaServerInstance.IsRunning;
                 tmpKeepAlive.Version = Version;
                 tmpKeepAlive.ZlmBuildDateTime = MediaServerInstance.ZlmBuildDateTime;
+                tmpKeepAlive.CutMergeFilePath = _akStreamKeeperConfig.CutMergeFilePath;
                 lock (DisksUseable)
                 {
                     if (DisksUseable != null && DisksUseable.Count > 0)
@@ -833,6 +835,8 @@ namespace AKStreamKeeper
 
                 _configPath = GCommon.OutConfigPath + "AKStreamKeeper.json";
             }
+            
+            _configPath = UtilsHelper.FindPreferredConfigFile(_configPath);//查找优先使用的配置文件
 
             GCommon.Logger.Info(
                 $"[{LoggerHead}]->Let's Go...");

@@ -3,7 +3,7 @@
   "IpV6Address": "fe80::8:807:2143:28a1%5",
   "Candidate": "127.0.0.1",
   "WebApiPort": 6880,
-  "MediaServerPath": "/Users/qiuzhouwei/SourceTemp/ZLMediaKit/release/darwin/Debug/MediaServer",
+  "MediaServerPath": "/Users/qiuzhouwei/Sources/ZLMediaKit/release/darwin/Debug/MediaServer",
   "AkStreamWebRegisterUrl": "http://127.0.0.1:5800/MediaServer/WebHook/MediaServerKeepAlive",
   "CutMergeFilePath": "/Users/qiuzhouwei/Downloads/CutMergeFile",
   "CustomRecordPathList": [
@@ -19,8 +19,10 @@
   "AccessKey": "O7O4S009-PGDW6HTM-T4CE6K64-V7RIP1I6-9300G54F-Z43KI40Q",
   "RtpPortCdTime": 3600,
   "HttpClientTimeoutSec": 5,
-  "DisableShell": true,
+  "DisableShell": false,
   "CheckLinuxDiskMount": false,
-  "ZLMediakitSSLFilePath": "./sslfiles/"
+  "ZLMediakitSSLFilePath": "./sslfiles/",
+  "ListenIp": "127.0.0.1",
+  "EnableRtspAuth": true
 }
 

@@ -86,20 +86,22 @@ namespace AKStreamWeb
                         .AllowAnyMethod()
                 );
             });
+#if(DEBUG)
             // 注册Swagger服务
             services.AddSwaggerGen(c =>
             {
                 // 添加文档信息
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "AKStreamWeb", Version = "v1" });
-                if (File.Exists(Path.Combine(GCommon.BaseStartPath, "AKStreamWeb.xml")))
-                    c.IncludeXmlComments(Path.Combine(GCommon.BaseStartPath, "AKStreamWeb.xml"));
-                if (File.Exists(Path.Combine(GCommon.BaseStartPath, "LibCommon.xml")))
-                    c.IncludeXmlComments(Path.Combine(GCommon.BaseStartPath, "LibCommon.xml"));
-                if (File.Exists(Path.Combine(GCommon.BaseStartPath, "LibZLMediaKitMediaServer.xml")))
-                    c.IncludeXmlComments(Path.Combine(GCommon.BaseStartPath, "LibZLMediaKitMediaServer.xml"));
-                if (File.Exists(Path.Combine(GCommon.BaseStartPath, "LibSystemInfo.xml")))
-                    c.IncludeXmlComments(Path.Combine(GCommon.BaseStartPath, "LibSystemInfo.xml"));
+                if (File.Exists(Path.Combine(AppContext.BaseDirectory, "AKStreamWeb.xml")))
+                    c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "AKStreamWeb.xml"), true);
+                if (File.Exists(Path.Combine(AppContext.BaseDirectory, "LibCommon.xml")))
+                    c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "LibCommon.xml"), true);
+                if (File.Exists(Path.Combine(AppContext.BaseDirectory, "LibZLMediaKitMediaServer.xml")))
+                    c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "LibZLMediaKitMediaServer.xml"), true);
+                if (File.Exists(Path.Combine(AppContext.BaseDirectory, "LibSystemInfo.xml")))
+                    c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "LibSystemInfo.xml"), true);
             });
+#endif
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddControllersWithViews().AddNewtonsoftJson(options =>
@@ -111,7 +113,7 @@ namespace AKStreamWeb
                     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                     //修改时间的序列化方式
                     options.SerializerSettings.Converters.Add(new IsoDateTimeConverter()
-                        { DateTimeFormat = "yyyy-MM-dd HH:mm:ss" });
+                    { DateTimeFormat = "yyyy-MM-dd HH:mm:ss" });
                     options.SerializerSettings.Converters.Add(new IpAddressConverter());
                     options.SerializerSettings.Converters.Add(new IpEndPointConverter());
                 }
@@ -132,11 +134,12 @@ namespace AKStreamWeb
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+#if(DEBUG)
             // 启用Swagger中间件
             app.UseSwagger();
             // 配置SwaggerUI
             app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "AKStreamWeb"); });
-
+#endif
             app.UseRouting();
 
             app.UseCors("cors");

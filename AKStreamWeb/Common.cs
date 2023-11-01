@@ -5,8 +5,10 @@ using System.IO;
 using System.Timers;
 using AKStreamWeb.AutoTask;
 using AKStreamWeb.Misc;
+using AKStreamWeb.Services;
 using LibCommon;
 using LibCommon.Structs;
+using LibCommon.Structs.DBModels;
 using LibGB28181SipClient;
 using LibGB28181SipServer;
 using LibSystemInfo;
@@ -31,12 +33,15 @@ namespace AKStreamWeb
         private static AutoLive _autoLive;
         private static AutoRecord _autoRecord;
         private static AutoTaskOther _autoTaskOther;
+      
 
 
         private static ConcurrentDictionary<string, WebHookNeedReturnTask> _webHookNeedReturnTask =
             new ConcurrentDictionary<string, WebHookNeedReturnTask>();
 
         public static DateTime StartupDateTime;
+
+       
 
 
         /// <summary>
@@ -87,6 +92,7 @@ namespace AKStreamWeb
 
                 _configPath = GCommon.OutConfigPath + "AKStreamWeb.json";
             }
+            _configPath = UtilsHelper.FindPreferredConfigFile(_configPath);//查找优先使用的配置文件
 
             StartupDateTime = DateTime.Now;
             string supportDataBaseList = "MySql\r\n" +

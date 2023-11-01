@@ -36,6 +36,7 @@ namespace LibCommon.Structs.GB28181
         private bool _autoVideo;
         private bool _noPlayerBreak;
         private int _recordSecs;
+        private string? _listenIp = "127.0.0.1";
 
 
         /// <summary>
@@ -248,6 +249,14 @@ namespace LibCommon.Structs.GB28181
         {
             get => _recordSecs;
             set => _recordSecs = value;
+        }
+        /// <summary>
+        /// 监听ip地址
+        /// </summary>
+        public string ListenIp
+        {
+            get => _listenIp;
+            set => _listenIp = value;
         }
     }
 }

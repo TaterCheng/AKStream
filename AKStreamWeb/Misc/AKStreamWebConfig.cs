@@ -17,6 +17,9 @@ namespace AKStreamWeb.Misc
         private bool _enableGB28181Client = false;
         private bool? _enableGB28181Server = false;
         private string? _ZlmFlvPrefix = "live";
+        private string? _listenIP ="127.0.0.1";
+        private  bool _localizationKingBaseDB=false;
+      
 
 
         /// <summary>
@@ -127,6 +130,25 @@ namespace AKStreamWeb.Misc
         {
             get => _ZlmFlvPrefix;
             set => _ZlmFlvPrefix = value;
+        }
+
+        /// <summary>
+        /// 监听ip地址
+        /// </summary>
+        public string ListenIp
+        {
+            get => _listenIP;
+            set => _listenIP = value;
+        }
+
+    
+        /// <summary>
+        /// 是否使用国产化的Kingbase数据库（人大金仓）
+        /// </summary>
+        public  bool LocalizationKingBaseDb
+        {
+            get => _localizationKingBaseDB;
+            set => _localizationKingBaseDB = value;
         }
     }
 }

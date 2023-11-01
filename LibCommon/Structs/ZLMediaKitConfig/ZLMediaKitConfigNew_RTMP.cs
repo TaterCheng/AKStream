@@ -7,7 +7,6 @@ public class ZLMediaKitConfigNew_RTMP
 {
     private int? _handshakeSecond;
     private int? _keepAliveSecond;
-    private int? _modifyStamp;
     private ushort? _port;
     private ushort? _sslport;
 
@@ -28,15 +27,6 @@ public class ZLMediaKitConfigNew_RTMP
     {
         get => _keepAliveSecond;
         set => _keepAliveSecond = value;
-    }
-
-    /// <summary>
-    /// 在接收rtmp推流时，是否重新生成时间戳(很多推流器的时间戳着实很烂)
-    /// </summary>
-    public int? ModifyStamp
-    {
-        get => _modifyStamp;
-        set => _modifyStamp = value;
     }
 
     /// <summary>

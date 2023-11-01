@@ -9,9 +9,12 @@ public class ZLMediaKitConfigNew_RTSP
     private int? _directProxy;
     private int? _handshakeSecond;
     private int? _keepAliveSecond;
-    private ushort? _port;
-    private ushort? _sslport;
     private int? _lowLatency;
+    private ushort? _port;
+    private int? _rtpTransportType;
+    private ushort? _sslport;
+  
+   
 
     /// <summary>
     /// rtsp专有鉴权方式是采用base64还是md5方式
@@ -82,4 +85,18 @@ public class ZLMediaKitConfigNew_RTSP
         get => _lowLatency;
         set => _lowLatency = value;
     }
+
+    /// <summary>
+    /// 强制协商rtp传输方式 (0:TCP,1:UDP,2:MULTICAST,-1:不限制)
+    /// 当客户端发起RTSP SETUP的时候如果传输类型和此配置不一致则返回461 Unsupported transport
+    /// 迫使客户端重新SETUP并切换到对应协议。目前支持FFMPEG和VLC
+    /// </summary>
+    /// <value></value>
+    public int? RtpTransportType
+    {
+        get => _rtpTransportType;
+        set => _rtpTransportType = value;
+    }
+
+  
 }

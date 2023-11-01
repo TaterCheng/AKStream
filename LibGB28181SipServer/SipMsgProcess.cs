@@ -357,6 +357,11 @@ namespace LibGB28181SipServer
                                 OnKeepaliveReceived?.Invoke(sipDeviceId, time, tmpSipDevice.KeepAliveLostTime);
                             }); //抛线程出去处理
 
+                            if (tmpSipDevice.KeepAliveTime != null)//获取设备的实际心跳周期
+                            {
+                                tmpSipDevice.KeepAliveTimeSpentMS = (time - tmpSipDevice.KeepAliveTime).TotalMilliseconds;
+                            }
+
                             tmpSipDevice.KeepAliveTime = time;
                             if (tmpSipDevice.RemoteEndPoint != null &&
                                 tmpSipDevice.RemoteEndPoint != remoteEndPoint &&
@@ -667,6 +672,7 @@ namespace LibGB28181SipServer
 
                             unAuthorizedResponse.Header.Allow = null;
                             unAuthorizedResponse.Header.Expires = 7200;
+                          
                             await Common.SipServer.SipTransport.SendResponseAsync(unAuthorizedResponse);
                             return;
                         }

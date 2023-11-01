@@ -10,12 +10,41 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace AKStreamWeb.Controllers
 {
+    /// <summary>
+    /// WebHook相关接口，第三方应用不需要关心此类接口
+    /// </summary>
     [Log]
     [ApiController]
     [Route("/MediaServer/WebHook")]
     [SwaggerTag("WebHook相关接口，第三方应用不需要关心此类接口")]
     public class WebHookController : ControllerBase
     {
+
+
+        /// <summary>
+        /// rtsprealm事件
+        /// </summary>
+        /// <param name="req"></param>
+        /// <returns></returns>
+        [Route("OnRtspRealm")]
+        [HttpPost]
+        public ResToWebHookOnRtspRealm OnRtspRealm(ReqForWebHookOnRtspRealm req)
+        {
+            return WebHookService.OnRtspRealm(req);
+        }
+        
+        /// <summary>
+        /// rtspauth事件
+        /// </summary>
+        /// <param name="req"></param>
+        /// <returns></returns>
+        [Route("OnRtspAuth")]
+        [HttpPost]
+        public ResToWebHookOnRtspAuth OnRtspAuth(ReqForWebHookOnRtspAuth req)
+        {
+            return WebHookService.OnRtspAuth(req);
+        }
+        
         /// <summary>
         /// 当有TS文件录制时
         /// </summary>

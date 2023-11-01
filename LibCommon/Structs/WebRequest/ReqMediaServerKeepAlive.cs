@@ -37,6 +37,7 @@ namespace LibCommon.Structs.WebRequest
         private int? _recordSec;
         private DateTime? _zlmBuildDateTime;
         private Dictionary<string,int>? _disksUseable;
+        private string? _cutMergeFilePath;
 
 
         /// <summary>
@@ -255,14 +256,24 @@ namespace LibCommon.Structs.WebRequest
             get => _zlmBuildDateTime;
             set => _zlmBuildDateTime = value;
         }
-
+        
+        
         /// <summary>
         /// 挂载的磁盘是否可用
         /// </summary>
-        public Dictionary<string, int> DisksUseable
+        public Dictionary<string, int>? DisksUseable
         {
             get => _disksUseable;
             set => _disksUseable = value;
+        }
+
+        /// <summary>
+        /// 裁剪合并的文件目录
+        /// </summary>
+        public string? CutMergeFilePath
+        {
+            get => _cutMergeFilePath;
+            set => _cutMergeFilePath = value;
         }
     }
 }

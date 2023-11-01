@@ -8,25 +8,27 @@ namespace LibCommon.Structs.ZLMediaKitConfig;
 [Serializable]
 public class ZLMediaKitConfigNew_Protocol
 {
-    private int? _modify_stamp;
-    private int? _enable_audio;
     private int? _add_mute_audio;
+    private int? _auto_close;
     private int? _continue_push_ms;
-    private int? _enable_hls;
-    private int? _enable_mp4;
-    private int? _enable_rtsp;
-    private int? _enable_rtmp;
-    private int? _enable_ts;
+    private int? _enable_audio;
     private int? _enable_fmp4;
+    private int? _enable_hls;
+    private int? _enable_hls_fmp4;
+    private int? _enable_mp4;
+    private int? _enable_rtmp;
+    private int? _enable_rtsp;
+    private int? _enable_ts;
+    private int? _fmp4_demand;
+    private int? _hls_demand;
+    private string? _hls_save_path;
+    private int? _modify_stamp;
     private int? _mp4_as_player;
     private int? _mp4_max_second;
     private string? _mp4_save_path;
-    private string? _hls_save_path;
-    private int? _hls_demand;
-    private int? _rtsp_demand;
     private int? _rtmp_demand;
+    private int? _rtsp_demand;
     private int? _ts_demand;
-    private int? _fmp4_demand;
 
     /// <summary>
     /// 转协议时，是否开启帧级时间戳覆盖
@@ -56,6 +58,19 @@ public class ZLMediaKitConfigNew_Protocol
     }
 
     /// <summary>
+    /// 无人观看时，是否直接关闭(而不是通过on_none_reader hook返回close)
+    /// 此配置置1时，此流如果无人观看，将不触发on_none_reader hook回调，
+    /// 而是将直接关闭流
+    /// </summary>
+    /// <value></value>
+    public int? Auto_Close
+    {
+        get => _auto_close;
+        set => _auto_close = value;
+    }
+  
+
+    /// <summary>
     /// 推流断开后可以在超时时间内重新连接上继续推流，这样播放器会接着播放。
     /// 置0关闭此特性(推流断开会导致立即断开播放器)
     /// 此参数不应大于播放器超时时间;单位毫秒
@@ -75,6 +90,16 @@ public class ZLMediaKitConfigNew_Protocol
         set => _enable_hls = value;
     }
 
+    /// <summary>
+    /// 是否开启转换为hls(fmp4)
+    /// </summary>
+    /// <value></value>
+    public int? Enable_Hls_Fmp4
+    {
+        get => _enable_hls_fmp4;
+        set => _enable_hls_fmp4 = value;
+    }
+   
     /// <summary>
     /// 是否开启MP4录制
     /// </summary>
@@ -156,11 +181,11 @@ public class ZLMediaKitConfigNew_Protocol
         set => _hls_save_path = value;
     }
 
-/*
-以下是按需转协议的开关，在测试ZLMediaKit的接收推流性能时，请把下面开关置1
-如果某种协议你用不到，你可以把以下开关置1以便节省资源(但是还是可以播放，只是第一个播放者体验稍微差点)，
- 如果某种协议你想获取最好的用户体验，请置0(第一个播放者可以秒开，且不花屏)
-*/
+    /*
+    以下是按需转协议的开关，在测试ZLMediaKit的接收推流性能时，请把下面开关置1
+    如果某种协议你用不到，你可以把以下开关置1以便节省资源(但是还是可以播放，只是第一个播放者体验稍微差点)，
+     如果某种协议你想获取最好的用户体验，请置0(第一个播放者可以秒开，且不花屏)
+    */
 
     /// <summary>
     /// hls协议是否按需生成，如果hls.segNum配置为0(意味着hls录制)，那么hls将一直生成(不管此开关)
