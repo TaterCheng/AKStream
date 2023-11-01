@@ -175,9 +175,9 @@ namespace AKStreamWeb.Misc
                 }
 
                 var videoChannel = new VideoChannel();
-                videoChannel.Enabled = false;
+                //videoChannel.Enabled = false;
                 videoChannel.AutoRecord = false;
-                videoChannel.AutoVideo = true;
+                //videoChannel.AutoVideo = true;
                 videoChannel.ChannelId = sipChannel.DeviceId;
                 if (sipChannel.SipChannelDesc != null && !string.IsNullOrEmpty(sipChannel.SipChannelDesc.Name))
                 {
@@ -201,16 +201,29 @@ namespace AKStreamWeb.Misc
                 videoChannel.DefaultRtpPort = false;
                 videoChannel.IpV4Address = sipChannel.RemoteEndPoint.Address.MapToIPv4().ToString();
                 videoChannel.IpV6Address = sipChannel.RemoteEndPoint.Address.MapToIPv6().ToString();
-                videoChannel.MediaServerId = $"unknown_server_{DateTime.Now.Ticks}";
-                videoChannel.NoPlayerBreak = false;
+                //videoChannel.NoPlayerBreak = false;
                 videoChannel.PDepartmentId = "";
                 videoChannel.PDepartmentName = "";
-                videoChannel.RtpWithTcp = false;
+                //videoChannel.RtpWithTcp = false;
                 videoChannel.VideoSrcUrl = null;
-                videoChannel.RecordSecs = 0;
+                videoChannel.RecordSecs = LibGB28181SipServer.Common.SipServerConfig.RecordSecs;
                 videoChannel.MethodByGetStream = MethodByGetStream.None;
                 videoChannel.MainId = sipChannel.Stream;
                 videoChannel.VideoDeviceType = VideoDeviceType.UNKNOW;
+
+                if (LibGB28181SipServer.Common.SipServerConfig.MediaServerId == "unknown_server_")
+                {
+                    videoChannel.MediaServerId = $"unknown_server_{DateTime.Now.Ticks}";
+                    videoChannel.Enabled = false;
+                }
+                else
+                {
+                    videoChannel.MediaServerId = LibGB28181SipServer.Common.SipServerConfig.MediaServerId;
+                    videoChannel.Enabled = true;
+                }
+                videoChannel.AutoVideo = LibGB28181SipServer.Common.SipServerConfig.AutoVideo;
+                videoChannel.RtpWithTcp= LibGB28181SipServer.Common.SipServerConfig.RtpWithTcp;
+                videoChannel.NoPlayerBreak = LibGB28181SipServer.Common.SipServerConfig.NoPlayerBreak;
                 try
                 {
                     #region debug sql output
