@@ -286,6 +286,24 @@ namespace AKStreamKeeper.Services
             }
         }
 
+        public static ResKeeperRtpInfo GetRtpPort()
+        {
+            ResKeeperRtpInfo resKeeperRtpInfo = new ResKeeperRtpInfo();
+            resKeeperRtpInfo.Ports= Common.PortInfoList;
+            resKeeperRtpInfo.UseCount = Common.PortInfoList.Where(i => i.Useed == true ||
+            (DateTime.Now - i.DateTime).TotalSeconds < Common.AkStreamKeeperConfig.RtpPortCdTime).Count();
+            return resKeeperRtpInfo;
+        }
+
+        public static ResKeeperRtpInfo GetRtpPortForSender()
+        {
+            ResKeeperRtpInfo resKeeperRtpInfo = new ResKeeperRtpInfo();
+            resKeeperRtpInfo.Ports = Common.PortInfoListForSender;
+            resKeeperRtpInfo.UseCount = Common.PortInfoListForSender.Where(i => i.Useed == true ||
+            (DateTime.Now - i.DateTime).TotalSeconds < Common.AkStreamKeeperConfig.RtpPortCdTime).Count();
+            return resKeeperRtpInfo;
+        }
+
         /// <summary>
         /// 获取流媒体服务器运行状态
         /// </summary>

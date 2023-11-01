@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using LibCommon;
 using LibCommon.Enums;
@@ -1618,6 +1619,95 @@ namespace AKStreamWeb.Services
         }
 
         /// <summary>
+        /// 通过DeviceId分页获取channel实例
+        /// </summary>
+        /// <param name="deviceId"></param>
+        /// <param name="rs"></param>
+        /// <returns></returns>
+        public static ResSipChannel GetSipChannelListByDeviceId(ReqSipChannel req, out ResponseStruct rs)
+        {
+            rs = new ResponseStruct()
+            {
+                Code = ErrorNumber.None,
+                Message = ErrorMessage.ErrorDic![ErrorNumber.None],
+            };
+            bool isPageQuery = req.PageIndex != null;
+            bool haveOrderBy = req.OrderBy != null;
+            if (isPageQuery)
+            {
+                if (req.PageSize > 10000)
+                {
+                    rs = new ResponseStruct()
+                    {
+                        Code = ErrorNumber.Sys_DataBaseLimited,
+                        Message = ErrorMessage.ErrorDic![ErrorNumber.Sys_DataBaseLimited],
+                    };
+                    GCommon.Logger.Warn(
+                        $"[{Common.LoggerHead}]->通过DeviceId获取channel实例->{JsonHelper.ToJson(req)}->{JsonHelper.ToJson(rs, Formatting.Indented)}");
+
+                    return null!;
+                }
+
+                if (req.PageIndex <= 0)
+                {
+                    rs = new ResponseStruct()
+                    {
+                        Code = ErrorNumber.Sys_DataBaseLimited,
+                        Message = ErrorMessage.ErrorDic![ErrorNumber.Sys_DataBaseLimited],
+                    };
+                    GCommon.Logger.Warn(
+                        $"[{Common.LoggerHead}]->通过DeviceId获取channel实例->{JsonHelper.ToJson(req)}->{JsonHelper.ToJson(rs, Formatting.Indented)}");
+
+                    return null!;
+                }
+            }
+
+            if (UtilsHelper.StringIsNullEx(req.deviceId))
+            {
+                rs = new ResponseStruct()
+                {
+                    Code = ErrorNumber.Sys_ParamsIsNotRight,
+                    Message = ErrorMessage.ErrorDic![ErrorNumber.Sys_ParamsIsNotRight],
+                };
+                GCommon.Logger.Warn($"[{Common.LoggerHead}]->通过DeviceId获取channel实例->{req.deviceId}->{JsonHelper.ToJson(rs)}");
+
+                return null;
+            }
+            List<SipChannel> retList = null;
+            List<SipChannel> list = LibGB28181SipServer.Common.SipDevices.FindLast(x => x.DeviceId.Equals(req.deviceId)).SipChannels;
+            
+            retList = LibGB28181SipServer.Common.SipDevices.FindLast(x => x.DeviceId.Equals(req.deviceId)).SipChannels.Skip((int)(req.PageIndex - 1) * (int)req.PageSize).Take((int)req.PageSize).ToList();
+            if (retList == null)
+            {
+                GCommon.Logger.Warn($"[{Common.LoggerHead}]->通过DeviceId获取channel实例->{req.deviceId}->结果为空");
+            }
+            else
+            {
+                GCommon.Logger.Debug($"[{Common.LoggerHead}]->通过DeviceId获取channel实例成功->{req.deviceId}->{JsonHelper.ToJson(retList)}");
+            }
+
+            long total = -1;
+            total = list.Count;
+            ResSipChannel result = new ResSipChannel();
+            result.SipChannelList = retList;
+            if (!isPageQuery)
+            {
+                if (list != null)
+                {
+                    total = retList.Count;
+                }
+                else
+                {
+                    total = 0;
+                }
+            }
+
+            result.Total = total;
+            result.Request = req;
+            return result;
+        }
+
+        /// <summary>
         /// 获取所有Sip设备列表
         /// </summary>
         /// <param name="rs"></param>
@@ -1632,6 +1722,42 @@ namespace AKStreamWeb.Services
             GCommon.Logger.Info(
                 $"[{Common.LoggerHead}]->获取Sip设备列表成功->{JsonHelper.ToJson(LibGB28181SipServer.Common.SipDevices.Count)}");
             return LibGB28181SipServer.Common.SipDevices;
+        }
+
+        /// <summary>
+        /// 获取Sip设备列表不带sipchannel
+        /// </summary>
+        /// <param name="rs"></param>
+        /// <returns></returns>
+        public static List<SipDevice> GetSipDeviceListWithoutSipChannel(out ResponseStruct rs)
+        {
+            rs = new ResponseStruct()
+            {
+                Code = ErrorNumber.None,
+                Message = ErrorMessage.ErrorDic![ErrorNumber.None],
+            };
+            GCommon.Logger.Info(
+                $"[{Common.LoggerHead}]->获取Sip设备列表成功->{JsonHelper.ToJson(LibGB28181SipServer.Common.SipDevices.Count)}");
+            List<SipDevice> retList = new List<SipDevice>();
+            foreach (var item in LibGB28181SipServer.Common.SipDevices)
+            {
+                SipDevice sipDevice = new SipDevice();
+                sipDevice.DeviceId= item.DeviceId;
+                sipDevice.IpAddress= item.IpAddress;
+                if (item.DeviceInfo != null)
+                {
+                    sipDevice.DeviceInfo = item.DeviceInfo;
+                }
+                
+                if (item.DeviceStatus != null)
+                {
+                    sipDevice.DeviceStatus = item.DeviceStatus;
+                }
+                
+                sipDevice.Port = item.Port;
+                retList.Add(sipDevice);
+            }
+            return retList;
         }
 
         /// <summary>

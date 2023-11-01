@@ -405,6 +405,32 @@ namespace AKStreamKeeper.Controllers
         }
 
         /// <summary>
+        /// 获取当前正在使用的rtp端口
+        /// </summary>
+        /// <param name="AccessKey"></param>
+        /// <returns></returns>
+        [Route("GetRtpPort")]
+        [HttpGet]
+        public ResKeeperRtpInfo GetRtpPort([FromHeader(Name = "AccessKey")] string AccessKey)
+        {
+            var ret = ApiService.GetRtpPort();
+            return ret;
+        }
+
+        /// <summary>
+        /// 获取当前正在使用的rtp端口(发送端)
+        /// </summary>
+        /// <param name="AccessKey"></param>
+        /// <returns></returns>
+        [Route("GetRtpPortForSender")]
+        [HttpGet]
+        public ResKeeperRtpInfo GetRtpPortForSender([FromHeader(Name = "AccessKey")] string AccessKey)
+        {
+            var ret = ApiService.GetRtpPortForSender();
+            return ret;
+        }
+
+        /// <summary>
         ///  获取一个可用的rtp端口（配置文件中minPort-maxPort的范围内的偶数端口）
         /// </summary>
         /// <param name="AccessKey"></param>
