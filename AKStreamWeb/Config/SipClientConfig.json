@@ -1,7 +1,7 @@
 {
-  "LocalIpAddress": "192.168.200.19",
+  "LocalIpAddress": "172.19.19.45",
   "LocalPort": 5061,
-  "SipServerIpAddress": "192.168.200.19",
+  "SipServerIpAddress": "172.19.19.45",
   "SipServerPort": 5060,
   "SipServerDeviceId": "33020000021180000001",
   "Realm": "3302000002",
