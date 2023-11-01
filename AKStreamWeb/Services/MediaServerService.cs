@@ -1410,10 +1410,10 @@ namespace AKStreamWeb.Services
                     {
                         try
                         {
-                            GCommon.Logger.Warn(
-                                $"[{Common.LoggerHead}]->请求视频流操作失败时重新刷新一次Sip设备->{videoChannel.DeviceId}");
+                            //GCommon.Logger.Warn(
+                            //    $"[{Common.LoggerHead}]->请求视频流操作失败时重新刷新一次Sip设备->{videoChannel.DeviceId}");
 
-                            SipServerCallBack.OnDeviceReadyReceived(sipDevice);
+                            //SipServerCallBack.OnDeviceReadyReceived(sipDevice);
                         }
                         catch
                         {
