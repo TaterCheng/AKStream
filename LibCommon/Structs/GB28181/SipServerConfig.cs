@@ -30,7 +30,12 @@ namespace LibCommon.Structs.GB28181
         private EncodingType _encodingType;
         private Encoding _encoding;
         private bool? _isPassive = true;
-        
+        private string? _mediaServerId;
+        private bool? _enabled;
+        private bool? _rtpWithTcp;
+        private bool _autoVideo;
+        private bool _noPlayerBreak;
+        private int _recordSecs;
 
 
         /// <summary>
@@ -210,6 +215,39 @@ namespace LibCommon.Structs.GB28181
 
                 return _en;
             }
+        }
+
+        public string MediaServerId
+        {
+            get => _mediaServerId;
+            set => _mediaServerId = value;
+        }
+
+        public bool? Enabled
+        {
+            get => _enabled;
+            set => _enabled = value;
+        }
+        public bool? RtpWithTcp
+        {
+            get => _rtpWithTcp;
+            set => _rtpWithTcp = value;
+        }
+        public bool AutoVideo
+        {
+            get => _autoVideo;
+            set => _autoVideo = value;
+        }
+        public bool NoPlayerBreak
+        {
+            get => _noPlayerBreak;
+            set => _noPlayerBreak = value;
+        }
+
+        public int RecordSecs
+        {
+            get => _recordSecs;
+            set => _recordSecs = value;
         }
     }
 }
