@@ -5,6 +5,7 @@ using LibCommon;
 using LibCommon.Structs;
 using LibCommon.Structs.GB28181;
 using LibCommon.Structs.WebRequest;
+using LibCommon.Structs.WebResponse;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -264,6 +265,49 @@ namespace AKStreamWeb.Controllers
         {
             ResponseStruct rs;
             var ret = SipServerService.GetSipDeviceListByDeviceId(deviceId, out rs);
+            if (!rs.Code.Equals(ErrorNumber.None))
+            {
+                throw new AkStreamException(rs);
+            }
+
+            return ret;
+        }
+
+        /// <summary>
+        /// 通过deviceId获取SipChannel列表
+        /// </summary>
+        /// <param name="AccessKey"></param>
+        /// <param name="deviceId"></param>
+        /// <returns></returns>
+        /// <exception cref="AkStreamException"></exception>
+        [Route("GetSipChannelListByDeviceId")]
+        [HttpPost]
+        public ResSipChannel GetSipChannelListByDeviceId(
+            [FromHeader(Name = "AccessKey")] string AccessKey, ReqSipChannel reqSipChannel)
+        {
+            ResponseStruct rs;
+            var ret = SipServerService.GetSipChannelListByDeviceId(reqSipChannel, out rs);
+            if (!rs.Code.Equals(ErrorNumber.None))
+            {
+                throw new AkStreamException(rs);
+            }
+
+            return ret;
+        }
+
+        /// <summary>
+        /// 获取Sip设备列表不带sipchannel
+        /// </summary>
+        /// <param name="AccessKey"></param>
+        /// <returns></returns>
+        /// <exception cref="AkStreamException"></exception>
+        [Route("GetSipDeviceListWithoutSipChannel")]
+        [HttpGet]
+        public List<SipDevice> GetSipDeviceListWithoutSipChannel(
+            [FromHeader(Name = "AccessKey")] string AccessKey)
+        {
+            ResponseStruct rs;
+            var ret = SipServerService.GetSipDeviceListWithoutSipChannel(out rs);
             if (!rs.Code.Equals(ErrorNumber.None))
             {
                 throw new AkStreamException(rs);
