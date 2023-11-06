@@ -593,6 +593,56 @@ namespace AKStreamWeb.Services
             return null!;
         }
 
+        /// <summary>
+        /// 获取需要合并的文件列表 
+        /// </summary>
+        /// <param name="rcmv"></param>
+        /// <param name="rs"></param>
+        /// <returns></returns>
+        private static List<CutMergeStruct> AnalysisVideoFile(ReqKeeperMergeVideoFile rcmv, out ResponseStruct rs)
+        {
+            rs = new ResponseStruct()
+            {
+                Code = ErrorNumber.None,
+                Message = ErrorMessage.ErrorDic![ErrorNumber.None],
+            };
+            var mediaServer = Common.MediaServerList.FindLast(x => x.MediaServerId.Equals(rcmv.MediaServerId));
+            if (mediaServer == null || mediaServer.KeeperWebApi == null || !mediaServer.IsKeeperRunning)
+            {
+                rs = new ResponseStruct()
+                {
+                    Code = ErrorNumber.Sys_AKStreamKeeperNotRunning,
+                    Message = ErrorMessage.ErrorDic![ErrorNumber.Sys_AKStreamKeeperNotRunning],
+                };
+                return null;
+            }
+
+            if (rcmv.Files != null && rcmv.Files.Count > 1) //取到了要合并文件的列表
+            {
+                List<CutMergeStruct> cutMergeStructList = new List<CutMergeStruct>();
+                foreach (var item in rcmv.Files)
+                {
+                    if (File.Exists(item))
+                    {
+                        CutMergeStruct cutMergeStruct = new CutMergeStruct();
+                        cutMergeStruct.FilePath = item;
+                        cutMergeStructList.Add(cutMergeStruct);
+                    }
+                }
+                if (cutMergeStructList.Count > 1)
+                {
+                    return cutMergeStructList;
+                }
+            }
+
+            rs = new ResponseStruct() //报错，视频资源没有找到
+            {
+                Code = ErrorNumber.Sys_MergeFileNotFound,
+                Message = ErrorMessage.ErrorDic![ErrorNumber.Sys_MergeFileNotFound],
+            };
+            return null!;
+        }
+
 
         /// <summary>
         /// 裁剪或合并视频文件
@@ -675,6 +725,92 @@ namespace AKStreamWeb.Services
                     }
 
                     return new ResKeeperCutMergeTaskResponse()
+                    {
+                        Duration = -1,
+                        FilePath = "",
+                        FileSize = -1,
+                        Status = CutMergeRequestStatus.WaitForCallBack,
+                        Task = task,
+                        Request = rcmv,
+                    };
+                }
+                catch (Exception ex)
+                {
+                    rs = new ResponseStruct() //报错，队列大于最大值
+                    {
+                        Code = ErrorNumber.Sys_DvrCutProcessQueueLimit,
+                        Message = ErrorMessage.ErrorDic![ErrorNumber.Sys_DvrCutProcessQueueLimit] + "\r\n" +
+                                  ex.Message + "\r\n" + ex.StackTrace,
+                    };
+                    return null!;
+                }
+            }
+
+            return null!;
+        }
+
+
+        /// <summary>
+        /// 合并视频文件
+        /// </summary>
+        /// <param name="rcmv"></param>
+        /// <param name="rs"></param>
+        /// <returns></returns>
+        public static ResKeeperMergeTaskResponse MergeVideoFile(ReqKeeperMergeVideoFile rcmv,
+            out ResponseStruct rs)
+        {
+            rs = new ResponseStruct()
+            {
+                Code = ErrorNumber.None,
+                Message = ErrorMessage.ErrorDic![ErrorNumber.None],
+            };
+
+            if (string.IsNullOrEmpty(rcmv.CallbackUrl) || !UtilsHelper.IsUrl(rcmv.CallbackUrl!))
+            {
+                rs = new ResponseStruct()
+                {
+                    Code = ErrorNumber.Sys_ParamsIsNotRight,
+                    Message = ErrorMessage.ErrorDic![ErrorNumber.Sys_ParamsIsNotRight],
+                };
+
+                return null!;
+            }
+
+            //异步回调
+            var mergeList = AnalysisVideoFile(rcmv, out rs);
+            if (mergeList != null && mergeList.Count > 0)
+            {
+                ReqKeeperCutMergeTask task = new ReqKeeperCutMergeTask()
+                {
+                    CutMergeFileList = mergeList,
+                    CallbakUrl = rcmv.CallbackUrl,
+                    CreateTime = DateTime.Now,
+                    TaskId = UtilsHelper.CreateGUID(),
+                    TaskStatus = MyTaskStatus.Create,
+                    ProcessPercentage = 0,
+                    PlayUrl = "",
+                };
+                try
+                {
+                    var mediaServer = Common.MediaServerList.FindLast(x => x.MediaServerId.Equals(rcmv.MediaServerId));
+                    if (mediaServer == null || mediaServer.KeeperWebApi == null || mediaServer.IsKeeperRunning == false)
+                    {
+                        rs = new ResponseStruct()
+                        {
+                            Code = ErrorNumber.Sys_AKStreamKeeperNotRunning,
+                            Message = ErrorMessage.ErrorDic![ErrorNumber.Sys_AKStreamKeeperNotRunning],
+                        };
+
+                        return null!;
+                    }
+
+                    var ret = mediaServer.KeeperWebApi.AddMergeTask(out rs, task);
+                    if (ret == null || rs.Code != ErrorNumber.None)
+                    {
+                        return null!;
+                    }
+
+                    return new ResKeeperMergeTaskResponse()
                     {
                         Duration = -1,
                         FilePath = "",

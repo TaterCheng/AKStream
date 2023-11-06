@@ -83,5 +83,27 @@ namespace AKStreamKeeper.Controllers
 
             return ret;
         }
+
+        /// <summary>
+        /// 添加一个合并任务
+        /// </summary>
+        /// <param name="AccessKey"></param>
+        /// <param name="task"></param>
+        /// <returns></returns>
+        /// <exception cref="AkStreamException"></exception>
+        [Route("AddMergeTask")]
+        [HttpPost]
+        public ResKeeperMergeTaskResponse AddMergeTask([FromHeader(Name = "AccessKey")] string AccessKey,
+            ReqKeeperCutMergeTask task)
+        {
+            ResponseStruct rs;
+            var ret = CutMergeService.AddMergeTask(task, out rs);
+            if (rs.Code != ErrorNumber.None)
+            {
+                throw new AkStreamException(rs);
+            }
+
+            return ret;
+        }
     }
 }

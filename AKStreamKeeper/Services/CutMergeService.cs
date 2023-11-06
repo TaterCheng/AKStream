@@ -184,6 +184,50 @@ namespace AKStreamKeeper.Services
         }
 
         /// <summary>
+        /// 添加一个合并任务
+        /// </summary>
+        /// <param name="rcmv"></param>
+        /// <param name="task"></param>
+        /// <param name="rs"></param>
+        /// <returns></returns>
+        public static ResKeeperMergeTaskResponse AddMergeTask(ReqKeeperCutMergeTask task, out ResponseStruct rs)
+        {
+            rs = new ResponseStruct()
+            {
+                Code = ErrorNumber.None,
+                Message = ErrorMessage.ErrorDic![ErrorNumber.None],
+            };
+            try
+            {
+                GCommon.Logger.Info("接受一个合并请求 ->" + task.TaskId);
+                CutMergeTaskList.Add(task);
+                CutMergeTaskStatusList.Add(task);
+                return new ResKeeperMergeTaskResponse()
+                {
+                    Duration = -1,
+                    FilePath = "",
+                    FileSize = -1,
+                    Status = CutMergeRequestStatus.WaitForCallBack,
+                    Task = task,
+                    Request = null,
+                };
+            }
+            catch (Exception ex)
+            {
+                rs = new ResponseStruct()
+                {
+                    Code = ErrorNumber.Other,
+                    Message = ErrorMessage.ErrorDic![ErrorNumber.Other],
+                    ExceptMessage = ex.Message,
+                    ExceptStackTrace = ex.StackTrace,
+                };
+                GCommon.Logger.Error(
+                    $"[{Common.LoggerHead}]->接受一个裁剪合并请求出现异常->TaskId:{task.TaskId}->Message:{ex.Message}->StackTrace:{ex.StackTrace}");
+                return null;
+            }
+        }
+
+        /// <summary>
         /// 将mp4转为ts格式封装，这里可能需要捕获异常，超时30分钟
         /// </summary>
         /// <param name="task"></param>
@@ -389,6 +433,7 @@ namespace AKStreamKeeper.Services
                             Thread.Sleep(20);
                         }
                     }
+
 
                     string filePath = mergeProcess(task);
 

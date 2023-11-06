@@ -140,6 +140,26 @@ namespace AKStreamWeb.Controllers
             return ret;
         }
 
+        /// <summary>
+        /// 添加一个合并任务
+        /// </summary>
+        /// <returns></returns>
+        [Route("MergeVideoFile")]
+        [HttpPost]
+        [AuthVerify]
+        public ResKeeperMergeTaskResponse MergeVideoFile([FromHeader(Name = "AccessKey")] string AccessKey,
+            ReqKeeperMergeVideoFile rcmv)
+        {
+            ResponseStruct rs;
+            var ret = MediaServerService.MergeVideoFile(rcmv, out rs);
+            if (rs.Code != ErrorNumber.None)
+            {
+                throw new AkStreamException(rs);
+            }
+
+            return ret;
+        }
+
 
         /// <summary>
         /// 获取裁剪合并任务状态

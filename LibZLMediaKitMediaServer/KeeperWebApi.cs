@@ -1607,5 +1607,76 @@ namespace LibZLMediaKitMediaServer
 
             return null;
         }
+
+        /// <summary>
+        /// 添加一个合并任务 
+        /// </summary>
+        /// <param name="rs"></param>
+        /// <param name="reqKeeper"></param>
+        /// <returns></returns>
+        public ResKeeperCutMergeTaskResponse AddMergeTask(out ResponseStruct rs, ReqKeeperCutMergeTask reqKeeper)
+        {
+            rs = new ResponseStruct()
+            {
+                Code = ErrorNumber.None,
+                Message = ErrorMessage.ErrorDic![ErrorNumber.None],
+            };
+
+            string url = $"{_baseUrl}/CutMergeService/AddMergeTask";
+            try
+            {
+                string reqData = JsonHelper.ToJson(reqKeeper);
+                Dictionary<string, string> headers = new Dictionary<string, string>();
+                headers.Add("AccessKey", _accessKey);
+
+                var httpRet = NetHelper.HttpPostRequest(url, headers, reqData, "utf-8", _httpClientTimeout);
+                if (!string.IsNullOrEmpty(httpRet))
+                {
+                    if (UtilsHelper.HttpClientResponseIsNetWorkError(httpRet))
+                    {
+                        rs = new ResponseStruct()
+                        {
+                            Code = ErrorNumber.Sys_HttpClientTimeout,
+                            Message = ErrorMessage.ErrorDic![ErrorNumber.Sys_HttpClientTimeout],
+                        };
+                        return null;
+                    }
+
+                    var resCutMergeTaskResponse = JsonHelper.FromJson<ResKeeperCutMergeTaskResponse>(httpRet);
+                    if (resCutMergeTaskResponse != null)
+                    {
+                        return resCutMergeTaskResponse;
+                    }
+
+                    rs = new ResponseStruct()
+                    {
+                        Code = ErrorNumber.MediaServer_WebApiDataExcept,
+                        Message = ErrorMessage.ErrorDic![ErrorNumber.MediaServer_WebApiDataExcept],
+                        ExceptMessage = httpRet,
+                        ExceptStackTrace = "",
+                    };
+                }
+                else
+                {
+                    rs = new ResponseStruct()
+                    {
+                        Code = ErrorNumber.MediaServer_WebApiDataExcept,
+                        Message = ErrorMessage.ErrorDic![ErrorNumber.MediaServer_WebApiDataExcept],
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                rs = new ResponseStruct()
+                {
+                    Code = ErrorNumber.MediaServer_WebApiExcept,
+                    Message = ErrorMessage.ErrorDic![ErrorNumber.MediaServer_WebApiExcept],
+                    ExceptMessage = ex.Message,
+                    ExceptStackTrace = ex.StackTrace,
+                };
+            }
+
+            return null;
+        }
     }
 }
