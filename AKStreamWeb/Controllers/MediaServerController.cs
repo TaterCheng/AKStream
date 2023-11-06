@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using AKStreamWeb.Attributes;
 using AKStreamWeb.Services;
@@ -46,7 +45,7 @@ namespace AKStreamWeb.Controllers
 
             return ret;
         }
-        
+
         /// <summary>
         /// 删除一个rtsp鉴权记录
         /// </summary>

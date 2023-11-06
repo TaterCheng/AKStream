@@ -778,7 +778,6 @@ namespace AKStreamKeeper
                             data["hook"]["on_rtsp_auth"] = $"http://{h}:{p}/MediaServer/WebHook/OnRtspAuth";
                             data["hook"]["on_rtsp_realm"] = $"http://{h}:{p}/MediaServer/WebHook/OnRtspRealm";
                             data["rtsp"]["authBasic"] = "0";
-
                         }
                         else
                         {
@@ -786,6 +785,7 @@ namespace AKStreamKeeper
                             data["hook"]["on_rtsp_realm"] = "";
                             data["rtsp"]["authBasic"] = "1";
                         }
+
                         data["hook"]["on_shell_login"] =
                             $"http://{h}:{p}/MediaServer/WebHook/OnShellLogin"; //shell鉴权
                         data["hook"]["on_stream_changed"] =
@@ -817,7 +817,7 @@ namespace AKStreamKeeper
 
                         parser.WriteFile(_configPath, data);
 
-                        var fileByte = System.IO.File.ReadAllBytes(_configPath);
+                        var fileByte = File.ReadAllBytes(_configPath);
                         if (UtilsHelper.IsBomHeader(fileByte))
                         {
                             UtilsHelper.WithOutBomHeader(_configPath);
@@ -998,7 +998,7 @@ namespace AKStreamKeeper
                         parser.WriteFile(_configPath, data);
 
 
-                        var fileByte = System.IO.File.ReadAllBytes(_configPath);
+                        var fileByte = File.ReadAllBytes(_configPath);
                         if (UtilsHelper.IsBomHeader(fileByte))
                         {
                             UtilsHelper.WithOutBomHeader(_configPath);

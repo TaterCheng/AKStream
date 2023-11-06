@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using System.Net;
-using LibCommon;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -113,7 +112,7 @@ namespace AKStreamWeb
                     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                     //修改时间的序列化方式
                     options.SerializerSettings.Converters.Add(new IsoDateTimeConverter()
-                    { DateTimeFormat = "yyyy-MM-dd HH:mm:ss" });
+                        { DateTimeFormat = "yyyy-MM-dd HH:mm:ss" });
                     options.SerializerSettings.Converters.Add(new IpAddressConverter());
                     options.SerializerSettings.Converters.Add(new IpEndPointConverter());
                 }

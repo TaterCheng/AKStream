@@ -2241,7 +2241,7 @@ namespace AKStreamWeb.Services
             req.Enable_Mp4 = 0; //录制mp4要关
             req.Rtp_Type = videoChannel.RtpWithTcp == true ? 0 : 1; //rtsp拉流时，是否使用tcp,0为tcp,1为udp,2为组播
             req.Timeout_Sec = Common.AkStreamWebConfig.WaitEventTimeOutMSec / 1000; //超时时间
-            req.Retry_Count = -1; //无限重试
+            req.Retry_Count = 0; //不成功则不重试拉流
             var ret = mediaServer.WebApiHelper.AddStreamProxy(req, out rs);
             if (ret == null || !rs.Code.Equals(ErrorNumber.None) || ret.Code != 0)
             {
@@ -3729,8 +3729,8 @@ namespace AKStreamWeb.Services
                 {
                     if (order != null)
                     {
-                            orderBy += UtilsHelper.AddQuote(order.FieldName) + " " +
-                                       Enum.GetName(typeof(OrderByDir), order.OrderByDir!) + ",";
+                        orderBy += UtilsHelper.AddQuote(order.FieldName) + " " +
+                                   Enum.GetName(typeof(OrderByDir), order.OrderByDir!) + ",";
                     }
                 }
 
@@ -4079,8 +4079,8 @@ namespace AKStreamWeb.Services
                 {
                     if (order != null)
                     {
-                            orderBy += UtilsHelper.AddQuote(order.FieldName) + " " +
-                                       Enum.GetName(typeof(OrderByDir), order.OrderByDir!) + ",";
+                        orderBy += UtilsHelper.AddQuote(order.FieldName) + " " +
+                                   Enum.GetName(typeof(OrderByDir), order.OrderByDir!) + ",";
                     }
                 }
 
@@ -4486,9 +4486,8 @@ namespace AKStreamWeb.Services
                 {
                     if (order != null)
                     {
-                            orderBy += UtilsHelper.AddQuote(order.FieldName) + " " +
-                                       Enum.GetName(typeof(OrderByDir), order.OrderByDir!) + ",";
-                       
+                        orderBy += UtilsHelper.AddQuote(order.FieldName) + " " +
+                                   Enum.GetName(typeof(OrderByDir), order.OrderByDir!) + ",";
                     }
                 }
 
@@ -5653,8 +5652,8 @@ namespace AKStreamWeb.Services
                 {
                     if (order != null)
                     {
-                            orderBy += UtilsHelper.AddQuote(order.FieldName) + " " +
-                                       Enum.GetName(typeof(OrderByDir), order.OrderByDir!) + ",";
+                        orderBy += UtilsHelper.AddQuote(order.FieldName) + " " +
+                                   Enum.GetName(typeof(OrderByDir), order.OrderByDir!) + ",";
                     }
                 }
 

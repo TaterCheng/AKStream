@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading;
 using AKStreamWeb.Services;
 using LibCommon;
@@ -65,10 +64,11 @@ namespace AKStreamWeb.AutoTask
             {
                 try
                 {
-                    if (Common.WebPerformanceInfo != null && Common.WebPerformanceInfo.CpuLoad < 35f && RunDeleteOrphanDataHandle!=null)
+                    if (Common.WebPerformanceInfo != null && Common.WebPerformanceInfo.CpuLoad < 35f &&
+                        RunDeleteOrphanDataHandle != null)
                     {
                         setSuspend = false;
-                       // RunDeleteOrphanDataHandle.Resume();   //linux平台不支持此方法
+                        // RunDeleteOrphanDataHandle.Resume();   //linux平台不支持此方法
                     }
                     else
                     {
@@ -80,7 +80,7 @@ namespace AKStreamWeb.AutoTask
                         if (RunDeleteOrphanDataHandle != null)
                         {
                             setSuspend = true;
-                          //  RunDeleteOrphanDataHandle.Suspend(); //linux平台不支持此方法
+                            //  RunDeleteOrphanDataHandle.Suspend(); //linux平台不支持此方法
                         }
                     }
 
@@ -88,15 +88,13 @@ namespace AKStreamWeb.AutoTask
                     {
                         oldState = setSuspend;
                         GCommon.Logger.Debug(
-                            $"[{Common.LoggerHead}]->当前双向清理孤立数据功能状态为：{(setSuspend?"挂起":"运行")}->CPUUsage:{Common.WebPerformanceInfo.CpuLoad}%");
+                            $"[{Common.LoggerHead}]->当前双向清理孤立数据功能状态为：{(setSuspend ? "挂起" : "运行")}->CPUUsage:{Common.WebPerformanceInfo.CpuLoad}%");
                     }
-
                 }
                 catch (Exception ex)
                 {
                     GCommon.Logger.Debug(
                         $"[{Common.LoggerHead}]->发生异常情况：{ex.Message}->{ex.StackTrace}");
-
                 }
 
                 Thread.Sleep(1000);
@@ -131,6 +129,7 @@ namespace AKStreamWeb.AutoTask
                                     {
                                         Thread.Sleep(1000);
                                     }
+
                                     if (mediaServer.RecordPathList != null && mediaServer.RecordPathList.Count > 0)
                                     {
                                         foreach (var recordPath in mediaServer.RecordPathList)
@@ -146,11 +145,13 @@ namespace AKStreamWeb.AutoTask
                                                 {
                                                     Thread.Sleep(1000);
                                                 }
+
                                                 if (fis != null && fis.Length > 0)
                                                 {
                                                     foreach (var f in fis)
                                                     {
-                                                        if (f.Exists && !f.Name.StartsWith(".") && !f.FullName.StartsWith(mediaServer.CutMergeFilePath))
+                                                        if (f.Exists && !f.Name.StartsWith(".") &&
+                                                            !f.FullName.StartsWith(mediaServer.CutMergeFilePath))
                                                         {
                                                             canSuspend = false;
                                                             if (Common.IsDebug)
@@ -171,6 +172,7 @@ namespace AKStreamWeb.AutoTask
                                                             {
                                                                 Thread.Sleep(1000);
                                                             }
+
                                                             if (exists == null || (exists.Deleted == true &&
                                                                     exists.Undo == false)) //记录不存在，或者被硬删除
                                                             {
@@ -194,6 +196,7 @@ namespace AKStreamWeb.AutoTask
                                                             {
                                                                 Thread.Sleep(1000);
                                                             }
+
                                                             Thread.Sleep(200);
                                                         }
                                                     }
@@ -210,6 +213,7 @@ namespace AKStreamWeb.AutoTask
                                 {
                                     Thread.Sleep(1000);
                                 }
+
                                 Thread.Sleep(200);
                             }
                         }
@@ -220,6 +224,7 @@ namespace AKStreamWeb.AutoTask
                             {
                                 Thread.Sleep(1000);
                             }
+
                             GCommon.Logger.Debug($"{ex.Message}\r\n{ex.StackTrace}");
                         }
 
@@ -235,6 +240,7 @@ namespace AKStreamWeb.AutoTask
                             {
                                 Thread.Sleep(1000);
                             }
+
                             foreach (var record in recordList)
                             {
                                 if (record != null)
@@ -254,6 +260,7 @@ namespace AKStreamWeb.AutoTask
                                         {
                                             Thread.Sleep(1000);
                                         }
+
                                         if (!exists)
                                         {
                                             mysqlRecordDropList.Add(record.Id);
@@ -287,6 +294,7 @@ namespace AKStreamWeb.AutoTask
                                     {
                                         Thread.Sleep(1000);
                                     }
+
                                     Thread.Sleep(200);
                                 }
                             }
@@ -304,6 +312,7 @@ namespace AKStreamWeb.AutoTask
                             {
                                 Thread.Sleep(1000);
                             }
+
                             GCommon.Logger.Debug($"{ex.Message}\r\n{ex.StackTrace}");
                         }
 
@@ -315,6 +324,7 @@ namespace AKStreamWeb.AutoTask
                 {
                     Thread.Sleep(1000);
                 }
+
                 Thread.Sleep(10000);
             }
         }

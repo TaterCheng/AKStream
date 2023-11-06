@@ -1,8 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Threading;
-using AKStreamKeeper.Misc;
 using LibCommon;
 
 namespace AKStreamKeeper.AutoTask;
@@ -33,7 +31,6 @@ public class DiskUseableChecker
     {
         while (true)
         {
-            
             try
             {
                 lock (Common.DisksUseable)

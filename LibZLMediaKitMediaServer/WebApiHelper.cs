@@ -1,8 +1,5 @@
 using System;
 using LibCommon;
-using LibCommon.Structs;
-
-using LibLogger;
 using LibZLMediaKitMediaServer.Structs.WebRequest.ZLMediaKit;
 using LibZLMediaKitMediaServer.Structs.WebResponse.ZLMediaKit;
 
@@ -689,6 +686,37 @@ namespace LibZLMediaKitMediaServer
                 var httpRet = NetHelper.HttpPostRequest(url, null, reqData, "utf-8", _httpClientTimeout);
                 if (!string.IsNullOrEmpty(httpRet))
                 {
+                    //当发现有流已存在时断掉这个流
+                    if (httpRet.ToLower().Contains("-1") && httpRet.ToLower().Contains("this") &&
+                        httpRet.ToLower().Contains("stream") &&
+                        httpRet.ToLower().Contains("already") && httpRet.ToLower().Contains("exists"))
+                    {
+                        var req2 = new ReqZLMediaKitCloseStreams()
+                        {
+                            App = req.App,
+                            Force = true,
+                            Stream = req.Stream,
+                            Vhost = req.Vhost,
+                        };
+                        try
+                        {
+                            CloseStreams(req2, out _);
+                        }
+                        catch
+                        {
+                        }
+
+                        rs = new ResponseStruct()
+                        {
+                            Code = ErrorNumber.MediaServer_WebApiDataExcept,
+                            Message = ErrorMessage.ErrorDic![ErrorNumber.MediaServer_WebApiDataExcept],
+                            ExceptMessage = httpRet,
+                            ExceptStackTrace = JsonHelper.ToJson(httpRet + "\r\n" +
+                                                                 "此处处理了AddStreamProxy返回This stream already exists的问题，先断开这个流，等后续拉流时应该能正常拉到"),
+                        };
+                        return null;
+                    }
+
                     if (UtilsHelper.HttpClientResponseIsNetWorkError(httpRet))
                     {
                         rs = new ResponseStruct()
@@ -1448,7 +1476,6 @@ namespace LibZLMediaKitMediaServer
                 var httpRet = NetHelper.HttpPostRequest(url, null, reqData, "utf-8", _httpClientTimeout);
                 if (!string.IsNullOrEmpty(httpRet))
                 {
-                    
                     if (UtilsHelper.HttpClientResponseIsNetWorkError(httpRet))
                     {
                         rs = new ResponseStruct()
