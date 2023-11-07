@@ -1,18 +1,18 @@
 {
-  "SipIpAddress": "0.0.0.0",
+  "SipIpAddress": "192.168.1.84",
   "SipIpV6Address": "fe80::8:807:2143:28a1%5",
   "ServerSipDeviceId": "33020000021180000001",
   "SipPort": 5060,
   "Realm": "3302000002",
   "GbVersion": "GB-2016",
-  "Authentication": true,
+  "Authentication": false,
   "SipUsername": "admin",
   "SipPassword": "123#@!qwe",
   "MsgProtocol": "TCP",
   "KeepAliveInterval": 30,
   "KeepAliveLostNumber": 3,
-  "IpV6Enable": true,
-  "EncodingType": "GB2312",
+  "IpV6Enable": false,
+  "EncodingType": "UTF8",
   "IsPassive": true,
 
   "MediaServerId": "unknown_server_",
@@ -21,7 +21,7 @@
   "AutoVideo": true,
   "NoPlayerBreak": false,
   "RecordSecs": 3600,
-  "ListenIp" : "0.0.0.0",
+  "ListenIp": "0.0.0.0",
 
   "NoAuthenticationRequireds": [
     {
