@@ -1,7 +1,7 @@
 {
-  "IpV4Address": "192.168.1.84",
+  "IpV4Address": "192.168.0.22",
   "IpV6Address": "fe80::8:807:2143:28a1%5",
-  "Candidate": "192.168.1.84",
+  "Candidate": "192.168.0.22",
   "WebApiPort": 6880,
   "MediaServerPath": "E:\\work\\Media\\AKStream\\AKStreamKeeper\\bin\\Debug\\net6.0\\MediaServer.exe",
   "AkStreamWebRegisterUrl": "http://127.0.0.1:5800/MediaServer/WebHook/MediaServerKeepAlive",
@@ -22,7 +22,9 @@
   "DisableShell": true,
   "CheckLinuxDiskMount": false,
   "ZLMediakitSSLFilePath": "./sslfiles/",
-  "ListenIp": "192.168.1.84",
-  "EnableRtspAuth": false
+  "ListenIp": "192.168.0.22",
+  "EnableRtspAuth": false,
+  "UseSwagger": true
 }
+
 

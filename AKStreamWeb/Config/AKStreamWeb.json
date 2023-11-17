@@ -11,6 +11,7 @@
   "EnableGB28181Server": true,
   "EnableGB28181Client": false,
   "ZlmFlvPrefix": "live",
-  "ListenIp": "0.0.0.0"
+  "ListenIp": "0.0.0.0",
+  "UseSwagger": true
 
 }

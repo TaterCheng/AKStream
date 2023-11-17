@@ -189,7 +189,7 @@ namespace LibCommon.Structs
     {
         private ulong _currentRecvBytes;
         private ulong _currentSendBytes;
-        private string _mac = null!;
+        private string _mac = "00-00-00-00-00-00";
         private ulong _totalRecvBytes;
         private ulong _totalSendBytes;
         private DateTime _updateTime;

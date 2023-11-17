@@ -176,7 +176,7 @@ namespace AKStreamWeb.Misc
 
                 var videoChannel = new VideoChannel();
                 //videoChannel.Enabled = false;
-                videoChannel.AutoRecord = false;
+                //videoChannel.AutoRecord = false;
                 //videoChannel.AutoVideo = true;
                 videoChannel.ChannelId = sipChannel.DeviceId;
                 if (sipChannel.SipChannelDesc != null && !string.IsNullOrEmpty(sipChannel.SipChannelDesc.Name))
@@ -224,6 +224,8 @@ namespace AKStreamWeb.Misc
                 videoChannel.AutoVideo = LibGB28181SipServer.Common.SipServerConfig.AutoVideo;
                 videoChannel.RtpWithTcp= LibGB28181SipServer.Common.SipServerConfig.RtpWithTcp;
                 videoChannel.NoPlayerBreak = LibGB28181SipServer.Common.SipServerConfig.NoPlayerBreak;
+                videoChannel.AutoRecord = LibGB28181SipServer.Common.SipServerConfig.AutoRecord;
+                videoChannel.RecordPlanName= LibGB28181SipServer.Common.SipServerConfig.RecordPlanName;
                 try
                 {
                     #region debug sql output

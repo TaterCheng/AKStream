@@ -1,5 +1,5 @@
 {
-  "SipIpAddress": "192.168.1.84",
+  "SipIpAddress": "192.168.0.22",
   "SipIpV6Address": "fe80::8:807:2143:28a1%5",
   "ServerSipDeviceId": "33020000021180000001",
   "SipPort": 5060,
@@ -15,13 +15,15 @@
   "EncodingType": "UTF8",
   "IsPassive": true,
 
-  "MediaServerId": "unknown_server_",
+  "MediaServerId": "e4NEbVDkmsMXLZ0J",
   "Enabled": false,
   "RtpWithTcp": false,
   "AutoVideo": true,
   "NoPlayerBreak": false,
   "RecordSecs": 3600,
   "ListenIp": "0.0.0.0",
+  "AutoRecord": true,
+  "RecordPlanName": "alltime",
 
   "NoAuthenticationRequireds": [
     {

@@ -33,7 +33,7 @@ namespace AKStreamKeeper.Misc
         private string? _zLMediakitSSLFilePath;
         private string? _listenIP = "127.0.0.1";
         private bool? _enableRtspAuth = false;
-
+        private bool _useSwagger = true;
 
         /// <summary>
         /// ipv4地址
@@ -252,6 +252,12 @@ namespace AKStreamKeeper.Misc
         {
             get => _enableRtspAuth;
             set => _enableRtspAuth = value;
+        }
+
+        public bool UseSwagger
+        {
+            get => _useSwagger;
+            set => _useSwagger = value;
         }
     }
 }

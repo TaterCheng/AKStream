@@ -153,11 +153,11 @@ namespace AKStreamWeb.AutoTask
                                                         if (f.Exists && !f.Name.StartsWith(".") &&
                                                             !f.FullName.StartsWith(mediaServer.CutMergeFilePath))
                                                         {
-                                                            canSuspend = false;
+
                                                             if (Common.IsDebug)
                                                             {
                                                                 var sql = ORMHelper.Db.Select<RecordFile>()
-                                                                    .Where(x => x.VideoPath.Equals(f.FullName.Trim()))
+                                                                    .Where(x => x.VideoPath.Equals(f.FullName.Trim().Replace("\\","/")))
                                                                     .ToSql();
 
                                                                 GCommon.Logger.Debug(
@@ -165,7 +165,7 @@ namespace AKStreamWeb.AutoTask
                                                             }
 
                                                             var exists = ORMHelper.Db.Select<RecordFile>()
-                                                                .Where(x => x.VideoPath.Equals(f.FullName.Trim()))
+                                                                .Where(x => x.VideoPath.Equals(f.FullName.Trim().Replace("\\", "/")))
                                                                 .ToOne();
                                                             canSuspend = true;
                                                             while (setSuspend)

@@ -87,22 +87,23 @@ namespace AKStreamKeeper
                         .AllowAnyMethod()
                 );
             });
-#if(DEBUG)
-            // 注册Swagger服务
-            services.AddSwaggerGen(c =>
+            if (Common.AkStreamKeeperConfig.UseSwagger)
             {
-                // 添加文档信息
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "AKStreamKeeper", Version = "v1" });
-                if (File.Exists(Path.Combine(AppContext.BaseDirectory, "AKStreamKeeper.xml")))
-                    c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "AKStreamKeeper.xml"), true);
-                if (File.Exists(Path.Combine(AppContext.BaseDirectory, "LibCommon.xml")))
-                    c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "LibCommon.xml"), true);
-                if (File.Exists(Path.Combine(AppContext.BaseDirectory, "LibZLMediaKitMediaServer.xml")))
-                    c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "LibZLMediaKitMediaServer.xml"), true);
-                if (File.Exists(Path.Combine(AppContext.BaseDirectory, "LibSystemInfo.xml")))
-                    c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "LibSystemInfo.xml"), true);
-            });
-#endif
+                // 注册Swagger服务
+                services.AddSwaggerGen(c =>
+                {
+                    // 添加文档信息
+                    c.SwaggerDoc("v1", new OpenApiInfo { Title = "AKStreamKeeper", Version = "v1" });
+                    if (File.Exists(Path.Combine(AppContext.BaseDirectory, "AKStreamKeeper.xml")))
+                        c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "AKStreamKeeper.xml"), true);
+                    if (File.Exists(Path.Combine(AppContext.BaseDirectory, "LibCommon.xml")))
+                        c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "LibCommon.xml"), true);
+                    if (File.Exists(Path.Combine(AppContext.BaseDirectory, "LibZLMediaKitMediaServer.xml")))
+                        c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "LibZLMediaKitMediaServer.xml"), true);
+                    if (File.Exists(Path.Combine(AppContext.BaseDirectory, "LibSystemInfo.xml")))
+                        c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "LibSystemInfo.xml"), true);
+                });
+            }
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddControllers().AddNewtonsoftJson(options =>
@@ -130,13 +131,15 @@ namespace AKStreamKeeper
 
             app.UseHttpsRedirection();
 
-#if(DEBUG)
-            // 启用Swagger中间件
-            app.UseSwagger();
-            // 配置SwaggerUI
-            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "AKStreamKeeper"); }
-            );
-#endif
+            if (Common.AkStreamKeeperConfig.UseSwagger)
+            {
+                // 启用Swagger中间件
+                app.UseSwagger();
+                // 配置SwaggerUI
+                app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "AKStreamKeeper"); }
+                );
+            }
+
             app.UseRouting();
             app.UseCors("cors");
             app.UseMiddleware<ExceptionMiddleware>(); //ExceptionMiddleware 加入管道

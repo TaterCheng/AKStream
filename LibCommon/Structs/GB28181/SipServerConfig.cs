@@ -37,7 +37,8 @@ namespace LibCommon.Structs.GB28181
         private bool _noPlayerBreak;
         private int _recordSecs;
         private string? _listenIp = "127.0.0.1";
-
+        private bool _autoRecord;
+        private string? _recordPlanName;
 
         /// <summary>
         /// sip服务器ip地址
@@ -244,7 +245,11 @@ namespace LibCommon.Structs.GB28181
             get => _noPlayerBreak;
             set => _noPlayerBreak = value;
         }
-
+        public bool AutoRecord
+        {
+            get => _autoRecord;
+            set => _autoRecord = value;
+        }
         public int RecordSecs
         {
             get => _recordSecs;
@@ -258,5 +263,14 @@ namespace LibCommon.Structs.GB28181
             get => _listenIp;
             set => _listenIp = value;
         }
+        /// <summary>
+        /// 默认录制计划名称
+        /// </summary>
+        public string RecordPlanName
+        {
+            get => _recordPlanName;
+            set => _recordPlanName = value;
+        }
+        
     }
 }

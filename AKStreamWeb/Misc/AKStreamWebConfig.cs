@@ -19,7 +19,7 @@ namespace AKStreamWeb.Misc
         private string? _ZlmFlvPrefix = "live";
         private string? _listenIP = "127.0.0.1";
         private bool _localizationKingBaseDB = false;
-
+        private bool _useSwagger = true;
 
         /// <summary>
         /// 流媒体服务器首次注册是否要求其重新mediaserver
@@ -148,6 +148,12 @@ namespace AKStreamWeb.Misc
         {
             get => _localizationKingBaseDB;
             set => _localizationKingBaseDB = value;
+        }
+
+        public bool UseSwagger
+        {
+            get => _useSwagger;
+            set => _useSwagger = value;
         }
     }
 }

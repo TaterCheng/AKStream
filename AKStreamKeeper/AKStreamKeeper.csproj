@@ -7,6 +7,10 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Content Remove="Config\AKStreamKeeper.json" />
+    </ItemGroup>
+
+    <ItemGroup>
       <None Remove="Config\logconfig.xml" />
     </ItemGroup>
 
@@ -14,6 +18,12 @@
       <Content Include="Config\logconfig.xml">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="Config\AKStreamKeeper.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
     <ItemGroup>

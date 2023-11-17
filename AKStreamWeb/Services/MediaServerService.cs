@@ -299,6 +299,21 @@ namespace AKStreamWeb.Services
             int endPos = -1;
             DateTime _start = DateTime.Parse(rcmv.StartTime.ToString("yyyy-MM-dd HH:mm:ss"));
             DateTime _end = DateTime.Parse(rcmv.EndTime.ToString("yyyy-MM-dd HH:mm:ss"));
+            if (Common.IsDebug)
+            {
+                var sql = ORMHelper.Db.Select<RecordFile>()
+                    .Where(x => (x.StartTime <= _start && x.EndTime >= _start)
+                             || (x.StartTime <= _end && x.EndTime >= _end) ||
+                                 (x.StartTime >= _start && x.EndTime <= _end))
+                   .WhereIf(!string.IsNullOrEmpty(rcmv.MediaServerId),
+                       x => x.MediaServerId!.Trim().ToLower().Equals(rcmv.MediaServerId!.Trim().ToLower()))
+                   .WhereIf(!string.IsNullOrEmpty(rcmv.MainId),
+                       x => x.Streamid!.Trim().ToLower().Equals(rcmv.MainId!.Trim().ToLower())).OrderBy(x => x.StartTime).ToSql();
+                GCommon.Logger.Debug(
+                           $"[{Common.LoggerHead}]->AnalysisVideoFile->执行SQL:->{sql}");
+            }
+               
+
             var videoList = ORMHelper.Db.Select<RecordFile>()
                  .Where(x => (x.StartTime <= _start && x.EndTime >= _start)
                           || (x.StartTime <= _end && x.EndTime >= _end) ||
