@@ -39,7 +39,7 @@ namespace LibCommon.Structs.WebRequest
         private string? _fFmpegTemplate;
         private bool _isShareChannel;
         private string? _shareUrl;
-        private string _shareDeviceId;
+        private string? _shareDeviceId;
 
 
         public string MediaServerId
