@@ -246,8 +246,10 @@ namespace AKStreamKeeper.Services
                 string videoFileNameWithOutExt = Path.GetFileNameWithoutExtension(task.CutMergeFileList[i]!.FilePath!);
                 string videoTsFileName = videoFileNameWithOutExt + ".ts";
                 string videoTsFilePath = tsPath + "/" + videoTsFileName;
+                //string args = " -i " + task.CutMergeFileList[i]!.FilePath! +
+                //              " -vcodec copy -acodec copy -vbsf h264_mp4toannexb " + videoTsFilePath + " -y";
                 string args = " -i " + task.CutMergeFileList[i]!.FilePath! +
-                              " -vcodec copy -acodec copy -vbsf h264_mp4toannexb " + videoTsFilePath + " -y";
+              " -vcodec copy -vbsf h264_mp4toannexb " + videoTsFilePath + " -y";
                 ProcessHelper tmpProcessHelper = new ProcessHelper(null, null, null);
                 var retRun = tmpProcessHelper.RunProcess(Common.AkStreamKeeperConfig.FFmpegPath, args, 1000 * 60 * 30,
                     out string std,
@@ -298,9 +300,15 @@ namespace AKStreamKeeper.Services
             string newFilePath = outPutPath + "/" + task.TaskId + "_" + DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss") +
                                  ".mp4";
 
+            //string args = " -threads " + Common.FFmpegThreadCount +
+            //              " -f concat -safe 0 -i " + mergePath +
+            //              "files.txt" + " -c copy  -movflags faststart " + newFilePath;
+            //string args = " -threads " + Common.FFmpegThreadCount +
+            //              " -f concat -safe 0 -i " + mergePath +
+            //              "files.txt" + " -c:v copy -c:a aac  -movflags faststart " + newFilePath;
             string args = " -threads " + Common.FFmpegThreadCount +
-                          " -f concat -safe 0 -i " + mergePath +
-                          "files.txt" + " -c copy  -movflags faststart " + newFilePath;
+                         " -f concat -safe 0 -i " + mergePath +
+                         "files.txt" + " -c:v copy  -movflags faststart " + newFilePath;
 
             ProcessHelper tmpProcessHelper = new ProcessHelper(null, null, null);
             var retRun = tmpProcessHelper.RunProcess(Common.AkStreamKeeperConfig.FFmpegPath, args, 1000 * 60 * 30,
@@ -337,8 +345,11 @@ namespace AKStreamKeeper.Services
             string tsPath = Path.GetDirectoryName(cms.FilePath!)!;
             string fileName = Path.GetFileName(cms.FilePath!)!;
             string newTsName = tsPath + "/cut_" + fileName;
+            //string args = " -i " + cms.FilePath +
+            //              " -vcodec copy -acodec copy -ss " + cms.CutStartPos + " -to " + cms.CutEndPos + " " +
+            //              newTsName + " -y";
             string args = " -i " + cms.FilePath +
-                          " -vcodec copy -acodec copy -ss " + cms.CutStartPos + " -to " + cms.CutEndPos + " " +
+                          " -vcodec copy -ss " + cms.CutStartPos + " -to " + cms.CutEndPos + " " +
                           newTsName + " -y";
             ProcessHelper tmpProcessHelper = new ProcessHelper(null, null, null);
             var retRun = tmpProcessHelper.RunProcess(Common.AkStreamKeeperConfig.FFmpegPath, args, 1000 * 60 * 30,
